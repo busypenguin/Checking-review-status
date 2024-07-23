@@ -3,11 +3,8 @@ import telegram
 from environs import Env
 
 
-def get_response(url, headers, payload=''):
-    if payload:
-        response = requests.get(url,  headers=headers, params=payload)
-    else:
-        response = requests.get(url,  headers=headers)
+def get_response(url, headers, payload=None):
+    response = requests.get(url,  headers=headers, params=payload)
     response.raise_for_status()
     return response.json()
 
