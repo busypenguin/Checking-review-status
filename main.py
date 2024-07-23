@@ -1,6 +1,7 @@
 import requests
 import telegram
 from environs import Env
+import time
 
 
 def get_response(url, headers, payload=None):
@@ -38,5 +39,6 @@ if __name__ == '__main__':
             print('Слишком долгая загрузка')
         except requests.exceptions.ConnectionError:
             print('Отсутствует подключение к интернету')
+            time.sleep(60)
         except KeyError:   # из-за 30 строки
             continue
