@@ -22,9 +22,9 @@ if __name__ == '__main__':
         try:
             headers = {"Authorization": 'Token '+dvmn_api_tiken}
             url = 'https://dvmn.org/api/long_polling/'
-            response_for_checking_timestamp = get_response(url, headers)
-            if response_for_checking_timestamp:
-                timestamp = response_for_checking_timestamp['timestamp_to_request']
+            response_for_checking_timestamp_to_request = get_response(url, headers)
+            if response_for_checking_timestamp_to_request:
+                timestamp = response_for_checking_timestamp_to_request['timestamp_to_request']
                 payload = {'timestamp': timestamp}
                 response_for_getting_review = get_response(url, headers, payload)
                 new_attempts = response_for_getting_review['new_attempts']
