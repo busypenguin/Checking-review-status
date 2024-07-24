@@ -24,7 +24,7 @@ if __name__ == '__main__':
             headers = {"Authorization": 'Token '+dvmn_api_tiken}
             url = 'https://dvmn.org/api/long_polling/'
             response_for_checking_timestamp_to_request = get_response(url, headers)
-            if response_for_checking_timestamp_to_request:
+            if response_for_checking_timestamp_to_request['status'] == 'timeout':
                 timestamp = response_for_checking_timestamp_to_request['timestamp_to_request']
                 payload = {'timestamp': timestamp}
                 response_for_getting_review = get_response(url, headers, payload)
@@ -40,5 +40,3 @@ if __name__ == '__main__':
         except requests.exceptions.ConnectionError:
             print('Отсутствует подключение к интернету')
             time.sleep(60)
-        except KeyError:   # из-за 30 строки
-            continue
