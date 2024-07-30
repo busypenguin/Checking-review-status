@@ -16,6 +16,7 @@ Python3 должен быть уже установлен.
 TELEGRAM_BOT_TOKEN вы получаете после создания телеграм-бота.
 TG_CHAT_ID это путь к вашей группе в телеграме.
 DVMN_API_TOKEN вы можете найти по ссылке <https://dvmn.org/api/docs/>.
+PROFILE_URL ссылка на профиль пользователя <https://dvmn.org/user/username/>.
 
 Например:
 
