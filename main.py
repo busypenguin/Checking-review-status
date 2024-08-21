@@ -5,7 +5,7 @@ import time
 import logging
 
 
-class MyLogsHandler(logging.Handler):
+class BotLogsHandler(logging.Handler):
     def __init__(self, tg_chat_id, bot, level=logging.NOTSET):
         super().__init__(level=level)
         self.tg_chat_id = tg_chat_id
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
     bot_logger = logging.getLogger("Bot logger")
     bot_logger.setLevel(logging.INFO)
-    bot_logger.addHandler(MyLogsHandler(tg_chat_id, bot))
+    bot_logger.addHandler(BotLogsHandler(tg_chat_id, bot))
     bot_logger.info("Бот запущен")
 
     while True:
