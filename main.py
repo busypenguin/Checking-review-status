@@ -57,5 +57,9 @@ if __name__ == '__main__':
         except requests.exceptions.ReadTimeout:
             continue
         except requests.exceptions.ConnectionError:
+            bot_logger.error('Бот упал с ошибкой: ')
             bot_logger.error('Отсутствует подключение к интернету')
             time.sleep(60)
+        except Exception as err:
+            bot_logger.error('Бот упал с ошибкой: ')
+            bot_logger.exception(err)
