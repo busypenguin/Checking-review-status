@@ -5,6 +5,17 @@ import time
 import logging
 
 
+class MyLogsHandler(logging.Handler):
+    def __init__(self, tg_chat_id, bot, level=logging.NOTSET):
+        super().__init__(level=level)
+        self.tg_chat_id = tg_chat_id
+        self.bot = bot
+
+    def emit(self, record):
+        log_entry = self.format(record)
+        self.bot.send_message(self.tg_chat_id,   text=log_entry)
+
+
 def get_response(url, headers, payload=None):
     response = requests.get(url,  headers=headers, params=payload)
     response.raise_for_status()
@@ -12,7 +23,6 @@ def get_response(url, headers, payload=None):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.INFO)
     env = Env()
     env.read_env()
     telegram_bot_token = env.str('TELEGRAM_BOT_TOKEN')
@@ -23,8 +33,10 @@ if __name__ == '__main__':
     api_url = 'https://dvmn.org/api/long_polling/'
     payload = None
 
-    logging.info('Бот запущен')
-    bot.send_message(chat_id=tg_chat_id, text="Бот запущен")
+    bot_logger = logging.getLogger("Bot logger")
+    bot_logger.setLevel(logging.INFO)
+    bot_logger.addHandler(MyLogsHandler(tg_chat_id, bot))
+    bot_logger.info("Бот запущен")
 
     while True:
         try:
@@ -37,7 +49,7 @@ if __name__ == '__main__':
                     bot.send_message(chat_id=tg_chat_id, text=f"Преподаватель проверил работу: {new_attempts[0]['lesson_title']}\n\nК сожалению, надо исправить")
                 else:
                     bot.send_message(chat_id=tg_chat_id, text=f"Преподаватель проверил работу: {new_attempts[0]['lesson_title']}\n\nУра, можно делать следующий урок!")
-                logging.info('Пользователь получил сообщение')
+                bot_logger.info('Пользователь получил сообщение')
             else:
                 timestamp = api_message['timestamp_to_request']
                 payload = {'timestamp': timestamp}
@@ -45,5 +57,5 @@ if __name__ == '__main__':
         except requests.exceptions.ReadTimeout:
             continue
         except requests.exceptions.ConnectionError:
-            logging.error('Отсутствует подключение к интернету')
+            bot_logger.error('Отсутствует подключение к интернету')
             time.sleep(60)
